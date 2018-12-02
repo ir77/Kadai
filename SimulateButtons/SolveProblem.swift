@@ -10,10 +10,6 @@ import Foundation
 
 class SolveProblem {
 
-    // ステータス[爆弾,空,未確定]
-    enum STATUS: String {
-        case BOMB = "x", EMPTY = "-", HATENA = "?"
-    }
     // 数字の定義
     var sujiRowCollection: [[Int]] = []
 
@@ -34,9 +30,14 @@ class SolveProblem {
         init(sujip: Int, mojip: String, x: Int, y: Int) {
             suji = sujip
             moji = mojip
-            status = STATUS.HATENA
+            status = .HATENA
             seki = (x + 1) * (y + 1)
             ichi = (x, y)
+        }
+
+        // ステータス[爆弾,空,未確定]
+        enum STATUS: String {
+            case BOMB = "x", EMPTY = "-", HATENA = "?"
         }
     }
 
@@ -74,7 +75,7 @@ class SolveProblem {
         // 全セルOK判定が出るまで一連の処理を繰り返す
         while(retryFlag) {
 
-            allDelegate()
+            decideOutline()
             let firstResult = checkAllCell()
             retryFlag = !firstResult.result
 
@@ -93,15 +94,15 @@ class SolveProblem {
                 // 爆弾以外のセルを一度全て空にする
                 for row in cellCollection {
                     for cel in row {
-                        if (STATUS.BOMB != cel.status) {
-                            cel.status = STATUS.EMPTY
+                        if (.BOMB != cel.status) {
+                            cel.status = .EMPTY
                         }
                     }
                 }
                 // 爆弾のある場所だけ、移動可能な場所を探し、はてなに変更していく
                 for row in cellCollection {
                     for col in row {
-                        if (STATUS.BOMB == col.status) {
+                        if (.BOMB == col.status) {
                             searchChangeableBomb(bombCell: col)
                         }
                     }
@@ -109,7 +110,7 @@ class SolveProblem {
                 // 爆弾を一つづつはてなの場所にいれていき、NGが減った時だけ確定する
                 for row in cellCollection {
                     for col in row {
-                        if STATUS.BOMB == col.status {
+                        if (.BOMB == col.status) {
                             moveToSafety(bombCell: col, errCount: checkAllCell().ng.count)
                         }
                     }
@@ -130,7 +131,7 @@ class SolveProblem {
         var bombList: [(seki: Int, moji: String)] = []
         for row in cellCollection {
             for col in row {
-                if(STATUS.BOMB == col.status) {
+                if(.BOMB == col.status) {
                     bombList.append((col.seki, col.moji))
                 }
             }
@@ -141,9 +142,7 @@ class SolveProblem {
             }
             return A.seki < B.seki
         }
-        var message = ""
-        for str in bombList { message += str.moji }
-        return message
+        return bombList.reduce("") { $0 + $1.moji }
 
     }
 
@@ -167,18 +166,18 @@ class SolveProblem {
     ///   - bombCell: 爆弾配置セル
     ///   - errCount: 現在のエラー総数
     func moveToSafety(bombCell: cell, errCount: Int) {
-        bombCell.status = STATUS.EMPTY
+        bombCell.status = .EMPTY
         for layer1Cell in pullArraund(cell: bombCell) {
             for layer2Cell in pullArraund(cell: layer1Cell) {
-                if(layer2Cell.ichi == bombCell.ichi || STATUS.HATENA != layer2Cell.status) {
+                if(layer2Cell.ichi == bombCell.ichi || .HATENA != layer2Cell.status) {
                     continue
                 }
-                layer2Cell.status = STATUS.BOMB
+                layer2Cell.status = .BOMB
                 // エラー数が減った時だけ確定する
                 if(errCount > checkAllCell().ng.count) {
                     return
                 }
-                layer2Cell.status = STATUS.HATENA
+                layer2Cell.status = .HATENA
             }
         }
 
@@ -186,24 +185,24 @@ class SolveProblem {
         for layer1Cell in pullArraund(cell: bombCell) {
             for layer2Cell in pullArraund(cell: layer1Cell) {
                 for layer3Cell in pullArraund(cell: layer2Cell) {
-                    if(layer3Cell.ichi == bombCell.ichi || STATUS.HATENA != layer3Cell.status) {
+                    if(layer3Cell.ichi == bombCell.ichi || .HATENA != layer3Cell.status) {
                         continue
                     }
-                    layer3Cell.status = STATUS.BOMB
+                    layer3Cell.status = .BOMB
                     // エラー数が減った時だけ確定する
                     if(errCount > checkAllCell().ng.count) {
                         return
                     }
-                    layer3Cell.status = STATUS.HATENA
+                    layer3Cell.status = .HATENA
                 }
             }
         }
-        bombCell.status = STATUS.BOMB
+        bombCell.status = .BOMB
     }
 
     /// 爆弾位置特定第一段階処理
     /// 爆弾の総数がオーバーしない範囲で場所を特定していく
-    func allDelegate() {
+    func decideOutline() {
 
         var startRow = 0
         var startCol = 0
@@ -260,10 +259,10 @@ class SolveProblem {
         while(isNotAllSetting) {
             for _ in 0 ..< cellSet.count {
                 let item = cellSet[startCell]
-                if(item.status == STATUS.HATENA) {
+                if(item.status == .HATENA) {
                     // 対象のセルに爆弾を追加しても問題ない時のみ設置する
                     if(item.suji >= bombCounter(targetCell: item) + 1) {
-                        item.status = STATUS.BOMB
+                        item.status = .BOMB
                         var checkResult = true
                         // 設置した結果他のセルがNGになったら取り消す
                         for layer1Cell in cellSet {
@@ -285,7 +284,7 @@ class SolveProblem {
                             }
                         }
                         if(!checkResult) {
-                            item.status = STATUS.HATENA
+                            item.status = .HATENA
                             continue
                         }
                         addBombs = addBombs + 1
@@ -303,8 +302,8 @@ class SolveProblem {
                     resetCount += 1
                     // スタート位置をずらしてもNGだった場合
                     for item in cellSet {
-                        if(item.status == STATUS.BOMB) {
-                            item.status = STATUS.HATENA
+                        if(item.status == .BOMB) {
+                            item.status = .HATENA
                         }
                     }
                     // セルと同数回分リセットしてもNGな場合はスルーする
@@ -324,24 +323,24 @@ class SolveProblem {
     /// - Parameter bombCell: 対象の爆弾セル
     func searchChangeableBomb(bombCell: cell) {
 
-        bombCell.status = STATUS.HATENA
+        bombCell.status = .HATENA
         // 1階層目
         for layer1Cell in pullArraund(cell: bombCell) {
             if(layer1Cell.ichi == bombCell.ichi) {
                 continue
             }
-            if(STATUS.EMPTY == layer1Cell.status) {
+            if(.EMPTY == layer1Cell.status) {
                 for layer2Cell in pullArraund(cell: bombCell) {
                     if(layer2Cell.ichi == bombCell.ichi) {
                         continue
                     }
                     if(moveExperiment(tryTarget: layer2Cell, changeTarget: layer1Cell)) {
-                        bombCell.status = STATUS.BOMB
+                        bombCell.status = .BOMB
                         return
                     }
                 }
                 // ここまで処理が抜けたら爆弾を移動できなかったと判定し、元に戻す
-                layer1Cell.status = STATUS.EMPTY
+                layer1Cell.status = .EMPTY
             }
         }
         // 2階層目
@@ -350,10 +349,10 @@ class SolveProblem {
                 continue
             }
             for layer2Cell in pullArraund(cell: layer1Cell) {
-                if(STATUS.EMPTY == layer2Cell.status) {
+                if(.EMPTY == layer2Cell.status) {
                     for layer3Cell in pullArraund(cell: layer2Cell) {
                         if(moveExperiment(tryTarget: layer3Cell, changeTarget: layer2Cell)) {
-                            bombCell.status = STATUS.BOMB
+                            bombCell.status = .BOMB
                             return
                         }
                     }
@@ -368,10 +367,10 @@ class SolveProblem {
             }
             for layer2Cell in pullArraund(cell: layer1Cell) {
                 for layer3Cell in pullArraund(cell: layer2Cell) {
-                    if(STATUS.EMPTY == layer3Cell.status) {
+                    if(.EMPTY == layer3Cell.status) {
                         for layer4Child in pullArraund(cell: layer3Cell) {
                             if(moveExperiment(tryTarget: layer4Child, changeTarget: layer3Cell)) {
-                                bombCell.status = STATUS.BOMB
+                                bombCell.status = .BOMB
                                 return
                             }
                         }
@@ -380,7 +379,7 @@ class SolveProblem {
             }
         }
         // 最後まで来てしまったら爆弾に戻す
-        bombCell.status = STATUS.BOMB
+        bombCell.status = .BOMB
     }
 
     /// ボムに変更可能なセルであるか、実際に変更してみてエラー検証する
@@ -392,17 +391,18 @@ class SolveProblem {
     func moveExperiment (tryTarget: cell, changeTarget: cell) -> Bool {
 
         // ?と爆弾は検証対象から除外
-        if(STATUS.EMPTY == tryTarget.status && tryTarget.ichi != changeTarget.ichi) {
-            tryTarget.status = STATUS.BOMB
-            if(tryTarget.suji == bombCounter(targetCell: tryTarget)) {
-                // 処理が成功したので処理を抜ける
-                tryTarget.status = STATUS.HATENA
-                return true
-            }
-            // 失敗なら元に戻す
-            tryTarget.status = STATUS.EMPTY
+        guard .EMPTY == tryTarget.status && tryTarget.ichi != changeTarget.ichi else {
             return false
         }
+
+        tryTarget.status = .BOMB
+        if(tryTarget.suji == bombCounter(targetCell: tryTarget)) {
+            // 処理が成功したので処理を抜ける
+            tryTarget.status = .HATENA
+            return true
+        }
+        // 失敗なら元に戻す
+        tryTarget.status = .EMPTY
         return false
     }
 
@@ -485,7 +485,7 @@ class SolveProblem {
     func bombCounter(targetCell: cell) -> Int {
         var bombCount = 0;
         for cellItem in pullArraund(cell: targetCell) {
-            if(cellItem.status == STATUS.BOMB) {
+            if(cellItem.status == .BOMB) {
                 bombCount += 1
             }
         }
@@ -498,8 +498,8 @@ class SolveProblem {
     func resetBombToEmpty(targetCell: cell) {
         // スタート位置をリセットしても条件を満たせなかった場合
         for item in pullArraund(cell: targetCell) {
-            if(item.status == STATUS.BOMB) {
-                item.status = STATUS.EMPTY
+            if(item.status == .BOMB) {
+                item.status = .EMPTY
             }
         }
     }

@@ -77,7 +77,7 @@ class SolveProblemTests: XCTestCase {
         var counter = 0
         for row in target.cellCollection {
             for col in row {
-                if(SolveProblem.STATUS.BOMB == col.status) {
+                if(.BOMB == col.status) {
                     XCTAssert(col.ichi == expect[counter])
                     counter += 1
                 }
@@ -138,7 +138,7 @@ class SolveProblemTests: XCTestCase {
         var counter = 0
         for row in target.cellCollection {
             for col in row {
-                if(SolveProblem.STATUS.BOMB == col.status) {
+                if(.BOMB == col.status) {
                     XCTAssert(col.ichi == expect[counter])
                     counter += 1
                 }
