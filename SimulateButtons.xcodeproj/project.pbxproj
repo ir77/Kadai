@@ -14,6 +14,8 @@
 		CD5EA0CB21AD825D0060B84C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD5EA0C921AD825D0060B84C /* LaunchScreen.storyboard */; };
 		CD5EA0D621AD825D0060B84C /* SimulateButtonsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5EA0D521AD825D0060B84C /* SimulateButtonsTests.swift */; };
 		CD5EA0E121AD825D0060B84C /* SimulateButtonsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5EA0E021AD825D0060B84C /* SimulateButtonsUITests.swift */; };
+		CD5EA0EF21AEC0E00060B84C /* SolveProblem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5EA0EE21AEC0E00060B84C /* SolveProblem.swift */; };
+		CD5EA0F121AFA3520060B84C /* SolveProblemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5EA0F021AFA3520060B84C /* SolveProblemTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		CD5EA0DC21AD825D0060B84C /* SimulateButtonsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimulateButtonsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD5EA0E021AD825D0060B84C /* SimulateButtonsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulateButtonsUITests.swift; sourceTree = "<group>"; };
 		CD5EA0E221AD825D0060B84C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CD5EA0EE21AEC0E00060B84C /* SolveProblem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolveProblem.swift; sourceTree = "<group>"; };
+		CD5EA0F021AFA3520060B84C /* SolveProblemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolveProblemTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +107,7 @@
 				CD5EA0C721AD825D0060B84C /* Assets.xcassets */,
 				CD5EA0C921AD825D0060B84C /* LaunchScreen.storyboard */,
 				CD5EA0CC21AD825D0060B84C /* Info.plist */,
+				CD5EA0EE21AEC0E00060B84C /* SolveProblem.swift */,
 			);
 			path = SimulateButtons;
 			sourceTree = "<group>";
@@ -112,6 +117,7 @@
 			children = (
 				CD5EA0D521AD825D0060B84C /* SimulateButtonsTests.swift */,
 				CD5EA0D721AD825D0060B84C /* Info.plist */,
+				CD5EA0F021AFA3520060B84C /* SolveProblemTests.swift */,
 			);
 			path = SimulateButtonsTests;
 			sourceTree = "<group>";
@@ -256,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD5EA0EF21AEC0E00060B84C /* SolveProblem.swift in Sources */,
 				CD5EA0C321AD82590060B84C /* ViewController.swift in Sources */,
 				CD5EA0C121AD82590060B84C /* AppDelegate.swift in Sources */,
 			);
@@ -266,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD5EA0D621AD825D0060B84C /* SimulateButtonsTests.swift in Sources */,
+				CD5EA0F121AFA3520060B84C /* SolveProblemTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,6 +441,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QGW8NPU4X9;
 				INFOPLIST_FILE = SimulateButtons/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -450,6 +459,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QGW8NPU4X9;
 				INFOPLIST_FILE = SimulateButtons/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -468,6 +478,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QGW8NPU4X9;
 				INFOPLIST_FILE = SimulateButtonsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -488,6 +499,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QGW8NPU4X9;
 				INFOPLIST_FILE = SimulateButtonsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -507,6 +519,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QGW8NPU4X9;
 				INFOPLIST_FILE = SimulateButtonsUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -526,6 +539,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QGW8NPU4X9;
 				INFOPLIST_FILE = SimulateButtonsUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

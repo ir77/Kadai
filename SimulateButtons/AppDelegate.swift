@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  SimulateButtons
 //
-//  Created by 田村みゆき on 2018/11/27.
+//  Created by Miyuki Hirose on 2018/11/27.
 //  Copyright © 2018 Miyuki Hirose. All rights reserved.
 //
 
