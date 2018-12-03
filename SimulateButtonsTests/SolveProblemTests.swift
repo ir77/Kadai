@@ -9,27 +9,8 @@
 import XCTest
 
 @testable import SimulateButtons
-class SolveProblemTests: XCTestCase {
 
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
+class SolveProblemTests_defaults: XCTestCase {
 
     // 数字配列
     let sujiRow1: [Int] = [1, 2, 2, 1, 1, 1]
@@ -50,14 +31,22 @@ class SolveProblemTests: XCTestCase {
     let mojiRow6: [String] = ["b", "t", "r", "p", "w", "a"]
     let mojiRow7: [String] = ["g", "u", "i", "x", "q", "u"]
     let mojiRow8: [String] = ["e", "t", "s", "m", "x", "n"]
+
+    var sujiRowCollection: [[Int]] {
+        return [sujiRow1, sujiRow2, sujiRow3, sujiRow4, sujiRow5, sujiRow6, sujiRow7, sujiRow8]
+    }
+
+    var mojiRowCollection: [[String]] {
+        return [mojiRow1, mojiRow2, mojiRow3, mojiRow4, mojiRow5, mojiRow6, mojiRow7, mojiRow8]
+    }
+
+    var target: SolveProblem!
+
+    override func setUp() {
+        target = SolveProblem(sujiRows: sujiRowCollection, mojiRows: mojiRowCollection);
+    }
+
     func test001_爆弾位置特定 () {
-
-        let sujiRowCollection = [sujiRow1, sujiRow2, sujiRow3, sujiRow4, sujiRow5, sujiRow6, sujiRow7, sujiRow8]
-        let mojiRowCollection = [mojiRow1, mojiRow2, mojiRow3, mojiRow4, mojiRow5, mojiRow6, mojiRow7, mojiRow8]
-
-        let target: SolveProblem = SolveProblem(sujiRows: sujiRowCollection, mojiRows: mojiRowCollection);
-        target.exec()
-
         // 期待値の作成
         var expect: [(x: Int, y: Int)] = []
         expect.append((x: 1, y: 0))
@@ -74,39 +63,30 @@ class SolveProblemTests: XCTestCase {
         expect.append((x: 3, y: 7))
         expect.append((x: 5, y: 7))
 
+        target.exec()
+
         var counter = 0
         for row in target.cellCollection {
-            for col in row {
-                if(SolveProblem.STATUS.BOMB == col.status) {
-                    XCTAssert(col.ichi == expect[counter])
-                    counter += 1
-                }
+            for col in row where col.status == .bomb {
+                XCTAssert(col.ichi == expect[counter])
+                counter += 1
             }
-
         }
     }
 
     func test002_メッセージ確認 () {
-
-        let sujiRowCollection = [sujiRow1, sujiRow2, sujiRow3, sujiRow4, sujiRow5, sujiRow6, sujiRow7, sujiRow8]
-        let mojiRowCollection = [mojiRow1, mojiRow2, mojiRow3, mojiRow4, mojiRow5, mojiRow6, mojiRow7, mojiRow8]
-
-        let target: SolveProblem = SolveProblem(sujiRows: sujiRowCollection, mojiRows: mojiRowCollection);
         target.exec()
+
         XCTAssertEqual(target.makeMassage(), "pregnantwoman")
     }
 
     func test003_kの総和() {
-
-        let sujiRowCollection = [sujiRow1, sujiRow2, sujiRow3, sujiRow4, sujiRow5, sujiRow6, sujiRow7, sujiRow8]
-        let mojiRowCollection = [mojiRow1, mojiRow2, mojiRow3, mojiRow4, mojiRow5, mojiRow6, mojiRow7, mojiRow8]
-
-        let target: SolveProblem = SolveProblem(sujiRows: sujiRowCollection, mojiRows: mojiRowCollection);
         XCTAssertEqual(target.sumAllSeki(), 756)
     }
+}
 
+class SolveProblemTests_other: XCTestCase {
     func test004_爆弾位置特定_課題を差し替えても成功するか確認 () {
-
         let sujiRowT1: [Int] = [1, 1, 1, 1, 2, 1]
         let sujiRowT2: [Int] = [1, 1, 1, 2, 3, 2]
         let sujiRowT3: [Int] = [2, 3, 1, 2, 1, 1]
@@ -120,9 +100,7 @@ class SolveProblemTests: XCTestCase {
         let mojiRowCollection = [mojiRowT, mojiRowT, mojiRowT, mojiRowT, mojiRowT, mojiRowT]
 
         let target: SolveProblem = SolveProblem(sujiRows: sujiRowCollection, mojiRows: mojiRowCollection);
-        target.exec()
 
-        // 期待値の作成
         var expect: [(x: Int, y: Int)] = []
         expect.append((x: 3, y: 0))
         expect.append((x: 5, y: 0))
@@ -135,15 +113,15 @@ class SolveProblemTests: XCTestCase {
         expect.append((x: 3, y: 5))
         expect.append((x: 4, y: 5))
 
+        target.exec()
+
         var counter = 0
         for row in target.cellCollection {
-            for col in row {
-                if(SolveProblem.STATUS.BOMB == col.status) {
-                    XCTAssert(col.ichi == expect[counter])
-                    counter += 1
-                }
+            for col in row where col.status == .bomb {
+                XCTAssert(col.ichi == expect[counter])
+                counter += 1
             }
-
         }
     }
 }
+
