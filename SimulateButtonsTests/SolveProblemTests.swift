@@ -63,25 +63,25 @@ class SolveProblemTests_defaults: XCTestCase {
         expect.append((x: 3, y: 7))
         expect.append((x: 5, y: 7))
 
-        target.exec()
+        target.execution()
 
         var counter = 0
-        for row in target.cellCollection {
+        for row in target.cells {
             for col in row where col.status == .bomb {
-                XCTAssert(col.ichi == expect[counter])
+                XCTAssert(col.position == expect[counter])
                 counter += 1
             }
         }
     }
 
     func test002_メッセージ確認 () {
-        target.exec()
+        target.execution()
 
         XCTAssertEqual(target.makeMassage(), "pregnantwoman")
     }
 
     func test003_kの総和() {
-        XCTAssertEqual(target.sumAllSeki(), 756)
+        XCTAssertEqual(target.cells.allSeki, 756)
     }
 }
 
@@ -113,12 +113,12 @@ class SolveProblemTests_other: XCTestCase {
         expect.append((x: 3, y: 5))
         expect.append((x: 4, y: 5))
 
-        target.exec()
+        target.execution()
 
         var counter = 0
-        for row in target.cellCollection {
+        for row in target.cells {
             for col in row where col.status == .bomb {
-                XCTAssert(col.ichi == expect[counter])
+                XCTAssert(col.position == expect[counter])
                 counter += 1
             }
         }
